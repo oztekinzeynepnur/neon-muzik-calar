@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Müzik Çalar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'pulse-neon': 'pulse-neon 2s ease-in-out infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'wave': 'wave 1s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        'pulse-neon': {
+                            '0%, 100%': { 
+                                boxShadow: '0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0ff, 0 0 20px #0ff, 0 0 25px #0ff'
+                            },
+                            '50%': { 
+                                boxShadow: '0 0 10px #fff, 0 0 20px #fff, 0 0 30px #0ff, 0 0 40px #0ff, 0 0 50px #0ff'
+                            }
+                        },
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        },
+                        'wave': {
+                            '0%': { height: '10px' },
+                            '50%': { height: '40px' },
+                            '100%': { height: '10px' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .neon-bg {
+            background: linear-gradient(to bottom, #000428, #004e92);
+            min-height: 100vh;
+        }
+        .visualizer-bar {
+            width: 4px;
+            background: #00fff2;
+            margin: 0 2px;
+            border-radius: 2px;
+            transition: height 0.2s ease;
+        }
+        .album-rotate {
+            animation: rotation 8s infinite linear;
+        }
+        @keyframes rotation {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .neon-text {
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0ff, 0 0 20px #0ff;
+        }
+        .neon-border {
+            box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0ff, 0 0 20px #0ff;
+        }
+    </style>
+</head>
+<body class="neon-bg">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold text-center text-white neon-text mb-12 animate-float">Neon Müzik Çalar</h1>
+        
+        <div class="max-w-2xl mx-auto bg-black/30 p-8 rounded-2xl backdrop-blur-lg border border-cyan-500/30">
+            <!-- Album Cover -->
+            <div class="flex justify-center mb-8">
+                <div class="w-64 h-64 rounded-full overflow-hidden border-4 border-cyan-500 neon-border">
+                    <img src="https://picsum.photos/400" alt="Album Cover" class="w-full h-full object-cover album-rotate">
+                </div>
+            </div>
+
+            <!-- Song Info -->
+            <div class="text-center mb-8">
+                <h2 class="text-2xl font-bold text-white neon-text mb-2">Harika Şarkı</h2>
+                <p class="text-cyan-400">Sanatçı Adı</p>
+            </div>
+
+            <!-- Visualizer -->
+            <div class="flex items-end justify-center h-16 mb-8 gap-1" id="visualizer">
+                <!-- Bars will be added by JavaScript -->
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="mb-4">
+                <div class="w-full bg-gray-700 rounded-full h-2 mb-2">
+                    <div class="bg-cyan-500 h-2 rounded-full animate-pulse-neon" style="width: 45%"></div>
+                </div>
+                <div class="flex justify-between text-sm text-cyan-400">
+                    <span>1:45</span>
+                    <span>3:30</span>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="flex justify-center items-center gap-6">
+                <button class="text-white hover:text-cyan-400 transition-colors">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+                    </svg>
+                </button>
+                <button class="w-16 h-16 bg-cyan-500 rounded-full flex items-center justify-center hover:bg-cyan-400 transition-colors animate-pulse-neon" id="playButton">
+                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                </button>
+                <button class="text-white hover:text-cyan-400 transition-colors">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Visualizer animation
+        const visualizer = document.getElementById('visualizer');
+        const BAR_COUNT = 32;
+
+        // Create visualizer bars
+        for (let i = 0; i < BAR_COUNT; i++) {
+            const bar = document.createElement('div');
+            bar.className = 'visualizer-bar';
+            visualizer.appendChild(bar);
+        }
+
+        // Animate visualizer
+        function animateVisualizer() {
+            const bars = document.querySelectorAll('.visualizer-bar');
+            bars.forEach(bar => {
+                const height = Math.random() * 40 + 10;
+                bar.style.height = `${height}px`;
+            });
+        }
+
+        // Start animation
+        setInterval(animateVisualizer, 100);
+
+        // Play button interaction
+        const playButton = document.getElementById('playButton');
+        let isPlaying = false;
+
+        playButton.addEventListener('click', () => {
+            isPlaying = !isPlaying;
+            playButton.innerHTML = isPlaying 
+                ? '<svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>'
+                : '<svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+        });
+
+        // Hover effects for all buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mouseenter', () => {
+                button.style.transform = 'scale(1.1)';
+            });
+            button.addEventListener('mouseleave', () => {
+                button.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

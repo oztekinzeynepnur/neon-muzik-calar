@@ -16,7 +16,8 @@ Bu proje, neon temalı bir müzik çalar arayüzüdür. TailwindCSS ile tasarlan
 
 ## 📸 Ekran Görüntüsü
 
-![Neon Müzik Çalar](./4fe6159d-4ddc-46ef-a9ea-a2172856bede.png)
+![image](https://github.com/user-attachments/assets/cf3eaa24-d1c0-44bd-9f96-dd7835247ce2)
+
 
 ## 📁 Kurulum
 1. Bu repoyu indir veya klonla:
